@@ -80,25 +80,29 @@ extension ViewController {
     }
 }
 extension ViewController: UITextFieldDelegate {
-        public func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-            if isValid() {
-                    self.tags.append(textField.text ?? "")
-                    self.collectionView.reloadData()
-                let section = 0
-                let item = collectionView.numberOfItems(inSection: section) - 1
-                let lastIndexPath = IndexPath(item: item, section: section)
-                collectionView.scrollToItem(at: lastIndexPath, at: .bottom, animated: true)
-                self.tagTf.text = ""
+    public func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        if isValid() {
+            if self.tags.contains(textField.text ?? "") {
+                print("Tag Already exists...")
+            } else {
+                self.tags.append(textField.text ?? "")
             }
-            return true
+            self.collectionView.reloadData()
+            let section = 0
+            let item = collectionView.numberOfItems(inSection: section) - 1
+            let lastIndexPath = IndexPath(item: item, section: section)
+            collectionView.scrollToItem(at: lastIndexPath, at: .bottom, animated: true)
+            self.tagTf.text = ""
         }
-        // MARK:- Validating input fields
-        func isValid() -> Bool {
-            if tagTf.text?.isEmpty ?? false {
-                print("empty tag")
-                return false
-            }
-            return true
-        }
+        return true
     }
+    // MARK:- Validating input fields
+    func isValid() -> Bool {
+        if tagTf.text?.isEmpty ?? false {
+            print("empty tag")
+            return false
+        }
+        return true
+    }
+}
 
